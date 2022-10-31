@@ -1,48 +1,53 @@
 package hacs;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.io.*;
-
 /**
  * Title: HACS Description: Copyright: Copyright (c) 2002 Company: msu
- * 
+ *
  * @author Zhang ji Zhu Wei
  * @version 1.0
  * @author mjfindler
  * @version 2.0 update to Java 8
+ * @author Rushikesh
+ * @version 3.0
  */
 
 public class ClassCourseList extends ArrayList<Course> {
 
+	private static final long serialVersionUID = 1L;
+
 	public ClassCourseList() {
+		System.out.println("Class Course List Implemented");
 	}
 
-	//// initialize the list by reading from the file.
-	void InitializeFromFile(String theFileName) {
+	// initialize the list by reading from the file.
+	void initializeFromFile(String theFileName) {
 		try {
 			BufferedReader file;
 			String strCourseName = null;
-			file = new BufferedReader(new FileReader("CourseInfo.txt"));
+			file = new BufferedReader(new FileReader(System.getProperty("user.dir") + "\\" + theFileName));
 			while ((strCourseName = file.readLine()) != null) {
-				Course theCourse;
-				theCourse = new Course(strCourseName, 0);
-//      theCourse.CourseName= strCourseName;
+				Course theCourse = new Course(strCourseName, 0);
 				add(theCourse);
 			}
-		} catch (Exception ee) {
-			;
+			file.close();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
-	Course FindCourseByCourseName(String CourseName) {
+	Course findCourseByCourseName(String CourseName) {
 		int nCourseCount = size();
 		for (int i = 0; i < nCourseCount; i++) {
-			Course theCourse;
-			theCourse = (Course) get(i);
-			if (theCourse.CourseName.compareTo(CourseName) == 0)
+			Course theCourse = (Course) get(i);
+			if (theCourse.courseName.compareTo(CourseName) == 0)
 				return theCourse;
 		}
 		return null;
 	}
-
 }
